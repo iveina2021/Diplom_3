@@ -1,13 +1,13 @@
 package src.test.java.stellarburgers;
 
 import com.codeborne.selenide.Selenide;
+import io.restassured.response.Response;
 import org.junit.After;
 import org.junit.Test;
+import src.test.java.stellarburgers.helper.api.UserRequestTestHelper;
 import src.test.java.stellarburgers.page.LoginPage;
 import src.test.java.stellarburgers.page.RegisterPage;
 import src.test.java.stellarburgers.page.StellarburgersHomePage;
-
-import java.util.UUID;
 
 import static com.codeborne.selenide.Condition.visible;
 import static com.codeborne.selenide.Selectors.byText;
@@ -24,8 +24,7 @@ public class RegistrationTest {
         LoginPage loginPage = stellarburgersHomePage.openLoginPageFromUserProfileButton();
         RegisterPage registerPage = loginPage.clickOnRegisterButton();
 
-        // unique email because we can't delete user
-        registerPage.fillRegisterFormAndClick(USERNAME, UUID.randomUUID() + EMAIL, PASSWORD);
+        registerPage.fillRegisterFormAndClick(NAME, EMAIL, PASSWORD);
 
         $(byText("Вход")).shouldBe(visible);
     }
@@ -37,10 +36,20 @@ public class RegistrationTest {
         LoginPage loginPage = stellarburgersHomePage.openLoginPageFromUserProfileButton();
         RegisterPage registerPage = loginPage.clickOnRegisterButton();
 
-        // unique email because we can't delete user
         String shortPassword = "123";
-        registerPage.fillRegisterFormAndClick(USERNAME, UUID.randomUUID() + EMAIL, shortPassword);
+        registerPage.fillRegisterFormAndClick(NAME, EMAIL, shortPassword);
         $(byText("Некорректный пароль")).shouldBe(visible);
+    }
+
+    @After
+    public void deleteUser() {
+        Response response = UserRequestTestHelper.loginUserRequest(prepareEmailPasswordRequest(EMAIL, PASSWORD));
+        if (response.getStatusCode() == 200) {
+            String accessToken = response
+                    .getBody().jsonPath().getString("accessToken");
+
+            UserRequestTestHelper.deleteUser(accessToken);
+        }
     }
 
     @After
