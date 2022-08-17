@@ -1,5 +1,6 @@
 package src.test.java.stellarburgers;
 
+import com.codeborne.selenide.Condition;
 import com.codeborne.selenide.Selenide;
 import io.restassured.response.Response;
 import org.junit.After;
@@ -9,9 +10,6 @@ import src.test.java.stellarburgers.page.LoginPage;
 import src.test.java.stellarburgers.page.RegisterPage;
 import src.test.java.stellarburgers.page.StellarburgersHomePage;
 
-import static com.codeborne.selenide.Condition.visible;
-import static com.codeborne.selenide.Selectors.byText;
-import static com.codeborne.selenide.Selenide.$;
 import static com.codeborne.selenide.Selenide.open;
 import static src.test.java.stellarburgers.helper.TestUtils.*;
 
@@ -24,9 +22,8 @@ public class RegistrationTest {
         LoginPage loginPage = stellarburgersHomePage.openLoginPageFromUserProfileButton();
         RegisterPage registerPage = loginPage.clickOnRegisterButton();
 
-        registerPage.fillRegisterFormAndClick(NAME, EMAIL, PASSWORD);
-
-        $(byText("Вход")).shouldBe(visible);
+        registerPage.fillRegisterFormAndClick(NAME, EMAIL, PASSWORD)
+                .getLoginHeader().shouldHave(Condition.text("Вход"));
     }
 
     @Test
@@ -37,8 +34,8 @@ public class RegistrationTest {
         RegisterPage registerPage = loginPage.clickOnRegisterButton();
 
         String shortPassword = "123";
-        registerPage.fillRegisterFormAndClick(NAME, EMAIL, shortPassword);
-        $(byText("Некорректный пароль")).shouldBe(visible);
+        registerPage.fillRegisterFormAndClick(NAME, EMAIL, shortPassword)
+                .getIncorrectPasswordError().shouldHave(Condition.text("Некорректный пароль"));
     }
 
     @After

@@ -13,8 +13,12 @@ public class StellarburgersHomePage {
     private final SelenideElement bunTab = $(".BurgerIngredients_ingredients__1N8v2").find(byText("Булки"));
     private final SelenideElement sauceTab = $(".BurgerIngredients_ingredients__1N8v2").find(byText("Соусы"));
     private final SelenideElement fillingsTab = $(".BurgerIngredients_ingredients__1N8v2").find(byText("Начинки"));
+
+    private final SelenideElement createBurgerHeader = $(".BurgerIngredients_ingredients__1N8v2").find(byText("Соберите бургер"));
+
     @FindBy(how = How.CLASS_NAME, using = "button_button__33qZ0")
     private SelenideElement signInButton;
+
     @FindBy(how = How.CSS, using = "a[href='/account']")
     private SelenideElement userProfileButton;
 
@@ -43,6 +47,10 @@ public class StellarburgersHomePage {
 
     public void fillingsTabClick() {
         fillingsTab.click();
+    }
+
+    public SelenideElement getCreateBurgerHeader() {
+        return createBurgerHeader;
     }
 }
 

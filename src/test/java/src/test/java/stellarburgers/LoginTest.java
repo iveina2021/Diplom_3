@@ -1,5 +1,6 @@
 package src.test.java.stellarburgers;
 
+import com.codeborne.selenide.Condition;
 import com.codeborne.selenide.Selenide;
 import io.restassured.response.Response;
 import org.junit.After;
@@ -11,9 +12,6 @@ import src.test.java.stellarburgers.page.LoginPage;
 import src.test.java.stellarburgers.page.RegisterPage;
 import src.test.java.stellarburgers.page.StellarburgersHomePage;
 
-import static com.codeborne.selenide.Condition.visible;
-import static com.codeborne.selenide.Selectors.byText;
-import static com.codeborne.selenide.Selenide.$;
 import static com.codeborne.selenide.Selenide.open;
 import static src.test.java.stellarburgers.helper.TestUtils.*;
 import static src.test.java.stellarburgers.helper.api.UserRequestTestHelper.createUserRequest;
@@ -21,7 +19,7 @@ import static src.test.java.stellarburgers.helper.api.UserRequestTestHelper.crea
 public class LoginTest {
 
     @Before
-    public void setUp() throws Exception {
+    public void setUp() {
         Response createUserResponse = createUserRequest(prepareCreateUserRequest(EMAIL, PASSWORD, NAME));
         createUserResponse
                 .then()
@@ -34,9 +32,8 @@ public class LoginTest {
 
         LoginPage loginPage = stellarburgersHomePage.openLoginPageFromSignInButton();
 
-        loginPage.login(EMAIL, PASSWORD);
-
-        $(byText("Соберите бургер")).shouldBe(visible);
+        loginPage.login(EMAIL, PASSWORD)
+                .getCreateBurgerHeader().shouldHave(Condition.text("Соберите бургер"));
     }
 
     @Test
@@ -45,9 +42,8 @@ public class LoginTest {
 
         LoginPage loginPage = stellarburgersHomePage.openLoginPageFromUserProfileButton();
 
-        loginPage.login(EMAIL, PASSWORD);
-
-        $(byText("Соберите бургер")).shouldBe(visible);
+        loginPage.login(EMAIL, PASSWORD)
+                .getCreateBurgerHeader().shouldHave(Condition.text("Соберите бургер"));
     }
 
     @Test
@@ -58,9 +54,8 @@ public class LoginTest {
         RegisterPage registerPage = loginPage.clickOnRegisterButton();
         registerPage.openLoginPageFromRegisterPageButton();
 
-        loginPage.login(EMAIL, PASSWORD);
-
-        $(byText("Соберите бургер")).shouldBe(visible);
+        loginPage.login(EMAIL, PASSWORD)
+                .getCreateBurgerHeader().shouldHave(Condition.text("Соберите бургер"));
     }
 
     @Test
@@ -73,9 +68,8 @@ public class LoginTest {
 
         recoverPasswordPage.openLoginFromForgotPasswordPageButton();
 
-        loginPage.login(EMAIL, PASSWORD);
-
-        $(byText("Соберите бургер")).shouldBe(visible);
+        loginPage.login(EMAIL, PASSWORD)
+                .getCreateBurgerHeader().shouldHave(Condition.text("Соберите бургер"));
     }
 
     @After

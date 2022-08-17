@@ -4,9 +4,15 @@ import com.codeborne.selenide.SelenideElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.How;
 
+import static com.codeborne.selenide.Selectors.byText;
+import static com.codeborne.selenide.Selenide.$;
 import static com.codeborne.selenide.Selenide.page;
 
 public class LoginPage {
+
+    private final SelenideElement loginHeader = $(".Auth_login__3hAey").find(byText("Вход"));
+
+    private final SelenideElement incorrectPasswordError = $(".Auth_login__3hAey").find(byText("Некорректный пароль"));
 
     @FindBy(how = How.CSS, using = "input[name='name']")
     private SelenideElement fieldEmail;
@@ -57,6 +63,14 @@ public class LoginPage {
     public ForgotPasswordPage clickOnRecoverPassword() {
         recoverPasswordButton.click();
         return page(ForgotPasswordPage.class);
+    }
+
+    public SelenideElement getLoginHeader() {
+        return loginHeader;
+    }
+
+    public SelenideElement getIncorrectPasswordError() {
+        return incorrectPasswordError;
     }
 
 }
