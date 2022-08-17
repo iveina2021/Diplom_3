@@ -4,15 +4,15 @@ import com.codeborne.selenide.SelenideElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.How;
 
+import static com.codeborne.selenide.Condition.text;
 import static com.codeborne.selenide.Selectors.byText;
-import static com.codeborne.selenide.Selenide.$;
-import static com.codeborne.selenide.Selenide.page;
+import static com.codeborne.selenide.Selenide.*;
 
 public class StellarburgersHomePage {
 
-    private final SelenideElement bunTab = $(".BurgerIngredients_ingredients__1N8v2").find(byText("Булки"));
-    private final SelenideElement sauceTab = $(".BurgerIngredients_ingredients__1N8v2").find(byText("Соусы"));
-    private final SelenideElement fillingsTab = $(".BurgerIngredients_ingredients__1N8v2").find(byText("Начинки"));
+    private final SelenideElement bunTab = $$(".tab_tab__1SPyG").filterBy(text("Булки")).first();
+    private final SelenideElement sauceTab = $$(".tab_tab__1SPyG").filterBy(text("Соусы")).first();
+    private final SelenideElement fillingsTab = $$(".tab_tab__1SPyG").filterBy(text("Начинки")).first();
 
     private final SelenideElement createBurgerHeader = $(".BurgerIngredients_ingredients__1N8v2").find(byText("Соберите бургер"));
 
@@ -37,16 +37,19 @@ public class StellarburgersHomePage {
         return page(UserProfilePage.class);
     }
 
-    public void bunTabClick() {
+    public SelenideElement selectBunTab() {
         bunTab.click();
+        return bunTab;
     }
 
-    public void sauceTabClick() {
+    public SelenideElement selectSauceTab() {
         sauceTab.click();
+        return sauceTab;
     }
 
-    public void fillingsTabClick() {
+    public SelenideElement selectFillingsTab() {
         fillingsTab.click();
+        return fillingsTab;
     }
 
     public SelenideElement getCreateBurgerHeader() {
